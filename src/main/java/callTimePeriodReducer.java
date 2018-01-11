@@ -37,6 +37,35 @@ public class callTimePeriodReducer extends Reducer< Text,Text, Text, Text> {
             int end_minute = Integer.parseInt(end_time.split(":")[1]);
             int end_second = Integer.parseInt(end_time.split(":")[2]);
 
+            double totalSecE = end_hour*60*60 + end_minute*60 + end_second;
+            double totalSecS = start_hour*60*60 + start_minute*60 + start_second;
+
+            boolean goodRecord = false;
+            if (totalSecS + raw_dur == totalSecE){
+                // 聊天过程没跨过24:00:00
+                goodRecord = true;
+            }else if(totalSecS + raw_dur >= 24*60*60){
+                // 聊天过程跨过了24:00:00
+                if (totalSecS + raw_dur - 24*60*60 == totalSecE){
+                    goodRecord = true;
+                }
+            }else{ 
+                //通话记录的开始时刻和结束时刻和通话时长三者间关系有误
+                goodRecord = false; 
+            }
+
+            if(goodRecord == false){
+                //根据对数据的观察，发现是结束时间记录有误，为00:00:00，重置结束时刻
+                totalSecE = totalSecS + raw_dur;
+                if (totalSecE > 24*60*60){
+                    totalSecE = totalSecE - 24*60*60;
+                }
+
+                end_hour = (int)Math.floor(totalSecE / 3600);
+                end_minute = (int)Math.floor((totalSecE - end_hour*3600)) / 60;
+                end_second = (int)(totalSecE - end_hour*60*60 - end_minute*60);
+            }
+
             int startHourMod = (int)Math.floor(start_hour / 3);
             int endHourMod = (int)Math.floor(end_hour / 3);
 

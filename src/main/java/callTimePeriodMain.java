@@ -26,6 +26,7 @@ public class callTimePeriodMain {
 //                String[] otherArgs = new String[]{"input/tb_call_201202_pro3_easysample.txt","output_calledTimeRatio"}; //test
                 String[] otherArgs = new String[]{"input/source/tb_call_201202_random.txt","output_calledTimeRatio"};
 //                String[] otherArgs = new String[]{"input/tb_call_201202_pro3_easysample2.txt","output_calledTimeRatio"};
+//                String[] otherArgs = new String[]{"input/tb_call_201202_pro3_easysample3.txt","output_calledTimeRatio"};
 
                 if(otherArgs.length != 2){
                     System.err.println("Usage: callTimePeriodMain <input path> <output path>");
